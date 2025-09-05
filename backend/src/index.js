@@ -6,6 +6,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import User from "./Model/model.user.js";
 import blogRouter from "./router/router.blogRouter.js";
+import Blog from "./Model/model.blog.js";
 
 dotenv.config();
 const app = express();
@@ -48,8 +49,6 @@ app.post("/api/auth/register", async (req, res) => {
   }
 });
 
-
-
 app.post("/api/auth/login", async (req, res) => {
   try {
     const { email, password} = req.body;
@@ -67,6 +66,68 @@ app.post("/api/auth/login", async (req, res) => {
     res.json({ accessToken: token, name: user.name, email: user.email });
   } catch (err) {
     res.status(500).json({ message: "Server error", error: err.message });
+  }
+});
+
+app.get("/api/auth/:id", async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id).select("-password");
+    if (!user) return res.status(404).json({ message: "User not found" });
+    res.json(user);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+app.get("/auth", async (req, res) => {
+    // get all the users
+    try {
+        const users = await User.find()
+        res.json({message: "Users fetched successfully", users});
+
+        
+    } catch (error) {
+        if(error instanceof Error){
+            console.log(error.message);
+            res.status(500).json({message: error.message});
+        }
+    }
+});
+
+app.put("/api/auth/:id", async (req, res) => {
+  try {
+    const { name, email, password } = req.body;
+    const user = await User.findById(req.params.id);
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    if (name) user.name = name;
+    if (email) user.email = email;
+    if (password) {
+      const salt = await bcrypt.genSalt(10);
+      user.password = await bcrypt.hash(password, salt);
+    }
+
+    await user.save();
+    res.json({ message: "Account updated successfully" });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+app.delete("/api/auth/:id", async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    // post
+    await Blog.deleteMany({ userId: req.params.id });
+
+    // Delete user
+    await user.deleteOne();
+
+    res.json({ message: "Account and posts deleted successfully" });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
 });
 
