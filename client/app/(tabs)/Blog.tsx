@@ -12,7 +12,7 @@ import {
   SafeAreaView,
 } from "react-native";
 
-const API_URL = "http://192.168.0.141:5000/api/blogs";
+const API_URL = "http://10.85.60.192:5000/api/blogs";
 
 export default function Blog() {
   const [title, setTitle] = useState("");
@@ -44,7 +44,7 @@ export default function Blog() {
       console.log("token user ID:", userId);
 
       console.log("Fetching user name...");
-      const res = await axios.get(`http://192.168.0.141:5000/api/auth/${userId}`);
+      const res = await axios.get(`http://10.85.60.192:5000/api/auth/${userId}`);
       
       setUserId(res.data._id); 
       console.log("Fetched user data:", res.data._id);
@@ -61,7 +61,7 @@ export default function Blog() {
   // Fetch blogs
   const fetchBlogs = async () => {
     try { 
-      const res = await axios.get(`http://192.168.0.141:5000/api/blogs/${userId}`);
+      const res = await axios.get(`http://10.85.60.192:5000/api/blogs/${userId}`);
       setBlogs(res.data);
       console.log("Fetched blogs:", res.data);
     }

@@ -9,7 +9,7 @@ const Profile = () => {
   const [userId, setUserId] = useState("");
   const [user, setUser] = useState({});
   const [form, setForm] = useState({ name: "", email: "", password: "" });
-  const API_URL = "http://192.168.0.141:5000/api/auth/";
+  const API_URL = "http://10.85.60.192:5000/api/auth/";
   const router = useRouter();
 
   // Decode token to get user ID

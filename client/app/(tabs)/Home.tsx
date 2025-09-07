@@ -39,7 +39,7 @@ export default function Home() {
   const [userId, setUserId] = useState("");
 
   const CURRENT_USER = userId; // logged-in user ID
-  const API_URL = "http://192.168.0.141:5000/api/blogs";
+  const API_URL = "http://10.85.60.192:5000/api/blogs";
 
   const router = useRouter();
 

@@ -69,7 +69,7 @@ export default function Landing() {
 
   async function loginUser(email: any, password: any) {
     try {
-      const res = await fetch("http://192.168.0.141:5000/api/auth/login", {
+      const res = await fetch("http://10.85.60.192:5000/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password, name }),
