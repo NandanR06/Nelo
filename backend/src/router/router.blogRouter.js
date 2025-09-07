@@ -47,7 +47,7 @@ router.get("/:userId", async (req, res) => {
     const blogs = await Blog.find({ userId }).sort({ _id: -1 });
 
     if (!blogs || blogs.length === 0) {
-      return res.status(404).json({ message: "No blogs found for this user" });
+      return res.status(201).json({ message: "No blogs found for this user" });
     }
 
     res.json(blogs);
